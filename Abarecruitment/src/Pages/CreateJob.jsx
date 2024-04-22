@@ -6,13 +6,26 @@ const CreateJob = () => {
     const [selectedOption, setselectedOption] = useState(null);
     const {
         register,
-        handleSubmit,
+        handleSubmit,reset,
         formState: { errors },
     } = useForm()
 
     const onSubmit = (data) => {
         data.skills = selectedOption;
-        console.log(data);
+        //console.log(data);
+        fetch("http://localhost:5000/post-job", {
+            method: "POST",
+            headers: {'content-type': 'application/json'},
+            body: JSON.stringify(data)
+        })
+        .then(res => res.json())
+        .then((result) => {
+            console.log(result);
+            if (result.acknowledged === true){
+                alert("Job Posted Successfully !!")
+            }
+            reset()
+        });
     };
 
     const options = [
@@ -131,22 +144,23 @@ const CreateJob = () => {
 
                     {/*7th row */}
                     <div className='w-full'>
-                    <label className='block mb-2 text-lg'>Job Description</label>
-                    <textarea className='w-full pl-3 py-1.5 focus:outline-none placeholder:text-grey-700'
-                    rows={6}
-                    defaultValue={"Mollit in laborum tempor Lorem incididunt irure. Aute eu ex ad sunt. Pariatur sint culpa do incididunt eiusmod eiusmod culpa. laborum tempor Lorem incididunt."}
-                    placeholder='Job Description'
-                    {...register("description")}/>
+                        <label className='block mb-2 text-lg'>Job Description</label>
+                        <textarea className='w-full pl-3 py-1.5 focus:outline-none placeholder:text-grey-700'
+                            rows={6}
+                            defaultValue={"Mollit in laborum tempor Lorem incididunt irure. Aute eu ex ad sunt. Pariatur sint culpa do incididunt eiusmod eiusmod culpa. laborum tempor Lorem incididunt."}
+                            placeholder='Job Description'
+                            {...register("description")} />
                     </div>
 
                     {/*last row */}
                     <div className='w-full'>
                         <label className='block mb-2 text-lg'>Job Posted By</label>
-                        <input type="email" 
-                                placeholder='your email'
-                                {...register("postedBy")} 
-                                className='create-job-input'
-                                />
+                        <input type="email"
+                            placeholder='your email'
+                            {...register("postedBy")}
+                            className='create-job-input'
+
+                        />
                     </div>
 
                     <input type="submit" className='block mt-12 bg-blue text-white font-semibold px-8 py-2 rounded-sm cirsor-pointer' />
