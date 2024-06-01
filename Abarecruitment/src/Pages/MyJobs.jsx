@@ -7,14 +7,38 @@ const MyJobs = () => {
     const [searchText, setSearchText] = useState("");
     const[isLoading, setIsLoading] = useState(true);
 
+
+    // Set Current Page
+    const [currentPage, setCurrentPage] = useState(1);
+    const itemsPerPage = 4;
+
     useEffect(() => {
         setIsLoading(true);
         fetch("http://localhost:5173/my-job/despicablezeus051@gmail.com")
           .then((res) => res.json())
           .then((data) => {
             setJobs(data);
+            setIsLoading(false)
           });
-      },[]);
+      },[searchText]);
+
+      //Pagination
+      const indexOfLastItem = currentPage * itemsPerPage;
+      const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+      const currentJobs = jobs.slice(indexOfFirstItem, indexOfLastItem)
+
+      // Next Button & Previous btn
+      const nextPage = () => {
+        if(indexOfFirstItem < jobs.length){
+          setCurrentPage(currentPage + 1)
+        }
+      }
+
+      const prevPage = () => {
+        if(currentPage > 1){
+          setCurrentPage(currentPage - 1)
+        }
+      }
 
     const handleSearch = () => {
        const filter = jobs.filter((job) => job.Title.toLowerCase().indexOf(searchText.toLowerCase()) !== -1);
@@ -25,7 +49,9 @@ const MyJobs = () => {
 
 
     const handleDelete = (id) => {
-      fetch(`http://localhost:5173//job/$(id)`, {})
+      fetch(`http://localhost:5173//job/$(id)`, {
+        method: "Delete"
+      })
       .then(res => res.json)
       .then(data => {
         if(data.acknowledged === true){
@@ -84,9 +110,11 @@ const MyJobs = () => {
           </tr>
         </thead>
 
-        <tbody>
+        {
+          isLoading ? (<div className='flex items-center justify-center h-20'><p>loading.....</p>
+          </div>) : (<tbody>
           {
-            jobs.map((job, index) => (
+            currentJobs.map((job, index) => (
               <tr key={index}>
               <th className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left text-blueGray-700 ">
                 {index+1}
@@ -110,13 +138,30 @@ const MyJobs = () => {
             ))
           }
   
-        </tbody>
+        </tbody>)
+        }
+
+        
 
       </table>
     </div>
   </div>
 </div>
-<footer className="relative pt-8 pb-6 mt-16">
+      
+   {/* Pagination */}
+        <div className='flex justify-center text-black space-x-8'>
+          {
+            currentPage > 1 && (
+              <button className='hover:underline' onClick={prevPage}>Previous</button>
+            )
+          }
+          {
+            indexOfLastItem < jobs.length && (
+              <button onClick={nextPage} className='hover:underline'>Next</button>
+            )
+          }
+        </div>
+        <footer className="relative pt-8 pb-6 mt-16">
   <div className="container mx-auto px-4">
     <div className="flex flex-wrap items-center md:justify-between justify-center">
       <div className="w-full md:w-6/12 px-4 mx-auto text-center">
@@ -127,8 +172,9 @@ const MyJobs = () => {
     </div>
   </div>
 </footer>
-</section>
-    </div>
+
+        </section>
+        </div>
   )
 }
 

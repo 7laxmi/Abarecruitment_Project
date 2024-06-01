@@ -15,7 +15,7 @@ const Navbar = () => {
   const navItems = [
     { path: "/", title: "Start a search" },
     { path: "/my-job", title: "My Jobs" },
-    { path: "/Post Job", title: "Post A job" },
+    { path: "/Post Job", title: "Post job" },
   ]
   return (
     <header className="max-w-screen-2x1 container mx-auto x1:px-24 px-4 stickey top-0 z-50 bg-white shadow-sm">
