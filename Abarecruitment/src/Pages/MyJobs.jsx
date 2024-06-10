@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from 'react'
+import { Link } from 'react-router-dom';
 
 const MyJobs = () => {
-
-    const email = "despicablezeus051@gmail.com"
     const [jobs, setJobs] = useState([]);
     const [searchText, setSearchText] = useState("");
     const[isLoading, setIsLoading] = useState(true);
@@ -14,7 +13,7 @@ const MyJobs = () => {
 
     useEffect(() => {
         setIsLoading(true);
-        fetch("http://localhost:5173/my-job/despicablezeus051@gmail.com")
+        fetch(`http://localhost:5000/myJobs/abcd@gmail.com`)
           .then((res) => res.json())
           .then((data) => {
             setJobs(data);
@@ -49,7 +48,7 @@ const MyJobs = () => {
 
 
     const handleDelete = (id) => {
-      fetch(`http://localhost:5173//job/$(id)`, {
+      fetch(`http://localhost:5000/job/${id}`, {
         method: "Delete"
       })
       .then(res => res.json)
@@ -129,7 +128,7 @@ const MyJobs = () => {
                 ${job.minPrice}-${job.maxPrice}
               </td>
               <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                <button><Link to={`/edit-jobs/${job?._id}`}>Edit</Link></button>
+                <button><Link to={`/edit-job/${job?._id}`}>Edit</Link></button>
               </td>
               <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
                 <button onClick={()=> handleDelete(job._id)}className='bg-red-700 py-2 px-6 text-white rounded-sm'>Delete</button>
