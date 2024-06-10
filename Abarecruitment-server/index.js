@@ -50,7 +50,7 @@ async function run() {
     })
 
     //get all jobs
-    app.get("/all-jobs", async(req,res) => {
+    app.get("/all-jobs", async(req, res) => {
         const jobs = await jobsCollections.find({}).toArray()
         res.send(jobs);
     })
@@ -65,16 +65,16 @@ async function run() {
     })
 
     //get jobs by email
-    app.get("/myJobs/:email", async(reg, res) =>{
+    app.get("/myJobs/:email", async(req, res) =>{
       //console.log(req.params.email)
-       const jobs = await jobsCollections.find({postedBY : req.params.email}).toArray();
+       const jobs = await jobsCollections.find({postedBy : req.params.email}).toArray();
        res.send(jobs)
     })
 
     // Delete a Job
     app.delete("/job/:id", async(req, res) =>{
         const id = req.params.id;
-        const filter = {id: new ObjectId(id)}
+        const filter = {_id: new ObjectId(id)}
         const result = await jobsCollections.deleteOne(filter);
         res.send(result)
     })
