@@ -3,7 +3,7 @@
       "id": 1,
       "companyName": "Linear company",
       "jobTitle": "Software Engineer",
-      "companyLogo": "/images/Linear.png",
+      "companyLogo": "/Linear.png",
       "minPrice": "20",
       "maxPrice": "30",
       "salaryType": "Yearly",
